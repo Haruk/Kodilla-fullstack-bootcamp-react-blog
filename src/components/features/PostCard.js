@@ -15,7 +15,7 @@ export function PostCard(props) {
           {props.date}
         </p>
         <p>{props.description}</p>
-        <Link to={`post/edit/${props.id}`}>
+        <Link to={`post/${props.id}`}>
           <Button>Read more</Button>
         </Link>
       </div>
