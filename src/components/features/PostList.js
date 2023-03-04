@@ -16,6 +16,7 @@ export function PostList() {
             description={post.shortDescription}
             date={post.publishedDate}
             author={post.author}
+            category={post.category}
           ></PostCard>
         );
       })}

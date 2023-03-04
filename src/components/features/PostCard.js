@@ -15,6 +15,10 @@ export function PostCard(props) {
           <span className='fw-bold'>Published: </span>
           {dateToStr(props.date)}
         </p>
+        <p>
+          <span className='fw-bold'>Category: </span>
+          {props.category}
+        </p>
         <p>{props.description}</p>
         <Link to={`post/${props.id}`}>
           <Button>Read more</Button>
