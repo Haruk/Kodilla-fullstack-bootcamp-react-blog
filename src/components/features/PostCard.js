@@ -1,5 +1,6 @@
 import { Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { dateToStr } from '../../utlis/dateToStr';
 
 export function PostCard(props) {
   return (
@@ -12,7 +13,7 @@ export function PostCard(props) {
         </p>
         <p>
           <span className='fw-bold'>Published: </span>
-          {props.date}
+          {dateToStr(props.date)}
         </p>
         <p>{props.description}</p>
         <Link to={`post/${props.id}`}>
