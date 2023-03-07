@@ -1,6 +1,4 @@
 import { Button } from 'react-bootstrap';
-// import { TextArea } from '../common/TextArea';
-// import { TextInput } from '../common/TextInput';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import ReactQuill from 'react-quill';
@@ -13,18 +11,24 @@ import { useSelector } from 'react-redux';
 import { getAllCategories } from '../../redux/categoriesReducer';
 
 
-export function PostForm({ action, actionText, ...props }) {
-  const [title, setTitle] = useState(props.title ? props.title : '');
-  const [author, setAuthor] = useState(props.author ? props.author : '');
-  const [publishedDate, setDate] = useState(
-    props.publishedDate ? props.publishedDate : ''
+export function PostForm({
+  action,
+  actionText,
+  title,
+  author,
+  publishedDate,
+  shortDescription,
+  content,
+  category,
+}) {
+  const [titleState, setTitle] = useState(title || '');
+  const [authorState, setAuthor] = useState(author || '');
+  const [publishedDateState, setDate] = useState(publishedDate || '');
+  const [shortDescriptionState, setDescription] = useState(
+    shortDescription || ''
   );
-  const [shortDescription, setDescription] = useState(
-    props.shortDescription ? props.shortDescription : ''
-  );
-  const [content, setContent] = useState(props.content ? props.content : '');
-  
-  const [category, setCategory]=useState(props.category ? props.category: '');
+  const [contentState, setContent] = useState(content || '');
+  const [categoryState, setCategory] = useState(category || '');
 
   const [contentError, setContentError] = useState(false);
   const [dateError, setDateError] = useState(false);
@@ -33,11 +37,18 @@ export function PostForm({ action, actionText, ...props }) {
   const allCategories = useSelector(getAllCategories);
 
   const handleSubmit = () => {
-    setContentError(!content);
-    setDateError(!publishedDate);
-    setCategoryError(!category);
-    if (content && publishedDate && category) {
-      action({ title, author, publishedDate, shortDescription, content, category });
+    setContentError(!contentState);
+    setDateError(!publishedDateState);
+    setCategoryError(!categoryState);
+    if (contentState && publishedDateState && categoryState) {
+      action({
+        title: titleState,
+        author: authorState,
+        publishedDate: publishedDateState,
+        shortDescription: shortDescriptionState,
+        content: contentState,
+        category: categoryState,
+      });
     }
   };
 
@@ -49,11 +60,10 @@ export function PostForm({ action, actionText, ...props }) {
 
   return (
     <form onSubmit={validate(handleSubmit)}>
-
       <FormLabel className='mt-3'>Title</FormLabel>
       <FormControl
         {...register('title', { required: true, minLength: 4 })}
-        value={title}
+        value={titleState}
         onChange={(e) => setTitle(e.target.value)}
         type='text'
         placeholder='Enter title'
@@ -67,7 +77,7 @@ export function PostForm({ action, actionText, ...props }) {
       <FormLabel className='mt-3'>Author</FormLabel>
       <FormControl
         {...register('author', { required: true, minLength: 4 })}
-        value={author}
+        value={authorState}
         onChange={(e) => setAuthor(e.target.value)}
         placeholder='Enter author'
         type='text'
@@ -81,7 +91,7 @@ export function PostForm({ action, actionText, ...props }) {
       <p className='mb-1 mt-3'>Published</p>
       <DatePicker
         className='px-2'
-        selected={publishedDate}
+        selected={publishedDateState}
         onChange={(date) => {
           setDate(date);
         }}
@@ -94,7 +104,7 @@ export function PostForm({ action, actionText, ...props }) {
 
       <FormLabel className='mt-3'>Category</FormLabel>
       <FormSelect
-        value={category}
+        value={categoryState}
         onChange={(e) => setCategory(e.target.value)}
       >
         <option value='' disabled>
@@ -117,7 +127,7 @@ export function PostForm({ action, actionText, ...props }) {
       <FormLabel className='mt-3'>Short description</FormLabel>
       <FormControl
         {...register('description', { required: true, minLength: 20 })}
-        value={shortDescription}
+        value={shortDescriptionState}
         onChange={(e) => setDescription(e.target.value)}
         placeholder='Leave a comment here'
         as='textarea'
@@ -132,7 +142,7 @@ export function PostForm({ action, actionText, ...props }) {
       <p className='mb-1 mt-3'>Main content</p>
       <ReactQuill
         theme='snow'
-        value={content}
+        value={contentState}
         onChange={setContent}
         placeholder='Leave a comment here'
       ></ReactQuill>
